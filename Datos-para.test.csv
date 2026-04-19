@@ -1,0 +1,12 @@
+Tiempo,Altura,Temperatura,Notas
+0,20,24,Inicio tras alimentar
+1,22,24,
+2,25,24.5,
+3,30,24.5,
+4,42,24,Empieza a oler más ácido
+5,58,23.8,Burbujas visibles
+6,72,23.5,Ha doblado volumen (fase log)
+7,82,23,
+8,87,22.8,Se desacelera
+9,88,22.5,
+10,88,22.5,Estacionaria / Empieza a bajar
