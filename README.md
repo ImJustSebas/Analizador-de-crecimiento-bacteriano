@@ -1,4 +1,5 @@
 Analizador de Crecimiento Bacteriano
+
 Desarrollado por Sebastian Porras Solano
 Una herramienta de escritorio para microbiologos que prefieren invertir su tiempo analizando datos, no formateando archivos CSV.
 
