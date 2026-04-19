@@ -1,87 +1,135 @@
 Analizador de Crecimiento Bacteriano
-Descripcion
-Analizador de Crecimiento Bacteriano es una aplicacion de escritorio desarrollada en Python para la visualizacion y analisis cuantitativo de curvas de crecimiento microbiano. La herramienta esta disenada especificamente para laboratorios de microbiologia, biotecnologia y bioquimica que requieren procesar datos de densidad optica (OD), absorbancia o altura de colonias a lo largo del tiempo.
+Desarrollado por Sebastian Porras Solano
+Una herramienta de escritorio para microbiologos que prefieren invertir su tiempo analizando datos, no formateando archivos CSV.
 
-La aplicacion incorpora un sistema inteligente de carga de archivos CSV con previsualizacion interactiva, permitiendo al usuario ajustar manualmente la codificacion y el separador de columnas antes de importar los datos. Una vez cargados los datasets, el software calcula automaticamente medias y desviaciones estandar para puntos de tiempo con replicas, y aplica un modelo de regresion logistica para estimar parametros cineticos fundamentales como la tasa maxima de crecimiento (k), el punto de inflexion (t0) y el tiempo de duplicacion (Td).
+https://img.shields.io/badge/python-3.8%252B-blue
+https://img.shields.io/badge/License-MIT-yellow.svg
+
+¿Por que existe este software?
+Durante el trabajo de laboratorio es comun encontrarse con archivos CSV generados por diferentes espectrofotometros, lectores de placas o software de camaras. Cada uno utiliza un separador distinto, una codificacion de caracteres exotica o nombres de columna no estandar.
+
+Analizador de Crecimiento Bacteriano nace para eliminar esa friccion. Este programa no solo grafica sus curvas de crecimiento; le permite dialogar con sus datos antes de importarlos, corregir la configuracion sobre la marcha y obtener parametros cineticos listos para incluir en su cuaderno de laboratorio o publicacion.
+
+Capturas de Pantalla
+(A continuacion se muestra como insertar imagenes en el README. Las imagenes deben estar en una carpeta llamada screenshots dentro del repositorio).
+
+Ventana de previsualizacion de CSV
+Ajuste interactivo de codificacion y separador antes de cargar los datos.
+https://screenshots/csv_preview.png
+
+Analisis de curvas de crecimiento
+Modelado logistico, barras de error y exportacion de resultados.
+https://screenshots/growth_curve.png
 
 Caracteristicas Principales
-Carga Robusta de Datos: Previsualizador interactivo de archivos CSV con deteccion automatica de codificacion (UTF-8, Latin-1, CP1252) y separadores (coma, punto y coma, tabulacion). El usuario puede corregir la configuracion en tiempo real observando una tabla de las primeras 20 filas.
+Previsualizador Interactivo de CSV
+Olvidese de probar codificaciones a ciegas. La aplicacion detecta automaticamente UTF-8, Latin-1 o CP1252 y le muestra las primeras 20 filas. Si el separador no es el correcto, puede cambiarlo desde un menu desplegable y ver el resultado al instante.
 
-Gestion de Multiples Cepas o Condiciones: Soporte para cargar y visualizar simultaneamente multiples datasets, cada uno identificado con un nombre y color unico en la grafica.
+Gestion de Multiples Condiciones Experimentales
+Cargue cuantas cepas, tratamientos o replicas biologicas desee. Cada dataset se identifica con un color unico y un nombre personalizado, permitiendo comparar visualmente el comportamiento de cada grupo.
 
-Agrupacion Inteligente: Calculo automatico de media y desviacion estandar para mediciones replicadas en el mismo punto temporal.
+Calculo Automatico de Replicas
+Si en su archivo CSV existen varias mediciones para un mismo tiempo, el software agrupa los datos y calcula automaticamente la media y la desviacion estandar. Las barras de error apareceran reflejadas en la grafica final.
 
-Entrada Manual de Datos: Interfaz para anadir o corregir puntos de datos individuales directamente sobre el dataset seleccionado, con validacion de tipos numericos.
+Ajuste Logistico Profesional (Modelo Sigmoide)
+El corazon del analisis cuantitativo. La aplicacion ajusta los datos al modelo logistico:
+f(t) = A / (1 + e^(-k * (t - t0)))
+Obteniendo:
 
-Ajuste Logistico (Modelo Sigmoide): Implementacion del modelo logistico para estimar capacidad de carga (A), tasa de crecimiento (k) y punto de inflexion (t0). Incluye calculo del coeficiente de determinacion (R²) y tiempo de duplicacion en fase exponencial.
+A: Capacidad de carga (asintota maxima).
 
-Suavizado de Respaldo: En caso de que los datos no se ajusten a una curva sigmoide clasica, la aplicacion utiliza un filtro Savitzky-Golay para generar una linea de tendencia suavizada sin interrumpir el flujo de trabajo.
+k: Tasa maxima de crecimiento.
 
-Exportacion Profesional:
+t0: Punto de inflexion de la curva.
 
-Guardado de graficas en formatos de alta resolucion: PNG, PDF y SVG (apto para publicaciones cientificas).
+R²: Bondad del ajuste.
 
-Exportacion de datos agregados a formato Excel (.xlsx) con hojas separadas por cepa y parametros de ajuste.
+Td: Tiempo de duplicacion en fase exponencial (ln(2)/k).
 
-Requisitos del Sistema
-Python 3.8 o superior.
+Sistema de Respaldo Inteligente (Savitzky-Golay)
+Sabemos que no todas las curvas bacterianas son perfectas. Si el modelo logistico no converge debido a ruido o fase de muerte celular, el programa aplica silenciosamente un filtro de suavizado Savitzky-Golay. Usted obtiene una linea de tendencia limpia sin mensajes de error que interrumpan su flujo de trabajo.
 
-Sistema Operativo: Windows, macOS o Linux (compatible con Tkinter).
+Entrada Manual de Datos
+¿Olvido anotar un punto o necesita corregir un valor atipico? Seleccione el dataset y agregue el dato manualmente a traves de la interfaz, sin necesidad de reabrir el archivo original.
 
-Dependencias
-Las siguientes bibliotecas de Python son necesarias para la ejecucion del programa:
+Exportacion de Alta Calidad
 
-text
-pandas>=1.3.0
-numpy>=1.20.0
-matplotlib>=3.4.0
-scipy>=1.7.0
-chardet>=4.0.0
-openpyxl>=3.0.0
-Nota: chardet y openpyxl son opcionales pero altamente recomendados para la deteccion avanzada de codificacion y exportacion a Excel respectivamente.
+Graficas: Guarde su curva en PNG (para informes rapidos), PDF o SVG (vectores ideales para publicaciones cientificas y posters).
+
+Datos Numericos: Exporte los datos agregados a un archivo Excel (.xlsx) con una hoja por cepa y otra hoja adicional con los parametros del ajuste logistico.
 
 Instalacion y Ejecucion
-Clonar el repositorio:
+Requisitos Previos
+Tener instalado Python 3.8 o superior.
+Si no lo tiene, descarguelo desde python.org. Durante la instalacion en Windows, asegurese de marcar la casilla "Add Python to PATH".
 
+Paso 1: Clonar el Repositorio
 bash
-git clone https://github.com/tu-usuario/analizador-crecimiento-bacteriano.git
-cd analizador-crecimiento-bacteriano
-Crear y activar un entorno virtual (recomendado):
-
-bash
-python -m venv venv
-source venv/bin/activate  # En Linux/macOS
-venv\Scripts\activate     # En Windows
-Instalar las dependencias:
+git clone https://github.com/ImJustSebas/Analizador-de-crecimiento-bacteriano.git
+cd Analizador-de-crecimiento-bacteriano
+Paso 2: Instalar Dependencias
+Se recomienda usar un entorno virtual, aunque no es obligatorio.
 
 bash
 pip install -r requirements.txt
-Ejecutar la aplicacion:
-
+Paso 3: Ejecutar el Programa
 bash
-python main.py
-(Ajusta el nombre del archivo si tu script principal tiene otro nombre, por ejemplo index.py)
+python Analizador-de-crecimiento-bacteriano.py
+Guia de Uso Rapido
+Inicie el programa y asigne un nombre a su proyecto (ej: "Experimento Cepa WT 37C").
 
-Estructura Esperada de los Archivos CSV
-La aplicacion realiza un mapeo flexible de columnas, buscando palabras clave. Sin embargo, para una compatibilidad optima, se recomienda que los archivos CSV contengan las siguientes columnas (el orden no es relevante):
+Cargue sus archivos CSV usando el boton "Cargar CSV (anadir dataset)".
 
-Tiempo: Valores numericos (horas, minutos, dias).
+En la ventana de previsualizacion:
 
-Altura: Valores numericos (Densidad Optica, Absorbancia, mm de crecimiento).
+Verifique que las columnas de Tiempo y Altura se hayan detectado correctamente.
 
-Temperatura (Opcional): Valor numerico de la temperatura de incubacion.
+Si el texto se ve con simbolos raros, cambie la Codificacion (Latin-1 suele resolver problemas con tildes).
 
-Notas (Opcional): Texto libre asociado a la medicion.
+Si los datos aparecen en una sola columna, ajuste el Separador (Tabulacion o Punto y coma).
 
-La ventana de previsualizacion permite asignar manualmente las columnas correctas en caso de nombres ambiguos o no estandar.
+Haga clic en "Analizar y Graficar".
 
-Uso de la Aplicacion
-Nuevo Proyecto: Asigne un nombre al experimento actual.
+Explore los parametros de ajuste en la esquina inferior izquierda de la figura.
 
-Cargar CSV: Seleccione uno o varios archivos. En la ventana de previsualizacion, verifique que la codificacion, el separador y el mapeo de columnas sean correctos. Presione "Cargar este CSV".
+Exporte la grafica o el informe en Excel segun lo necesite.
 
-Analizar: Una vez cargados todos los datasets deseados, haga clic en "Analizar y Graficar".
+Dependencias del Proyecto
+El proyecto se apoya en las siguientes bibliotecas cientificas de Python. El archivo requirements.txt contiene las versiones exactas recomendadas.
 
-Interpretar Resultados: La grafica mostrara los puntos experimentales (media +/- desviacion estandar) y una linea punteada representando el modelo logistico o el suavizado de datos.
+Pandas: Manipulacion de datos tabulares.
 
-Exportar: Guarde la figura en formato vectorial o exporte la tabla de datos agregados a Excel.
+NumPy: Calculos numericos de alto rendimiento.
+
+Matplotlib: Generacion de graficos de calidad publicable.
+
+SciPy: Algoritmos de ajuste de curvas (curve_fit) y filtros de suavizado (savgol_filter).
+
+Chardet: Deteccion inteligente de la codificacion de caracteres del archivo.
+
+OpenPyXL: Soporte para exportar datos a formato Excel (.xlsx).
+
+Estructura Esperada del CSV
+El programa es flexible, pero para una experiencia optima, su archivo CSV deberia contener al menos dos columnas:
+
+Tiempo (h)	Densidad Optica (OD600)	Temperatura (C)	Notas
+0	0.102	37	Inoculo
+2	0.145	37	-
+4	0.310	37	Inicio exp.
+La aplicacion detecta automaticamente nombres como Tiempo, Time, Horas, Height, Absorbancia, OD, Valor, etc. Si su archivo tiene nombres muy distintos, la ventana de previsualizacion le permitira asignar la columna correcta manualmente.
+
+Contacto y Soporte
+Este software es mantenido activamente. Si encuentra un error, tiene una sugerencia o simplemente quiere mostrar como utiliza la herramienta en su laboratorio, no dude en contactarme.
+
+Autor: Sebastian Porras Solano
+
+Email: sebastianporras067@gmail.com
+
+GitHub: @ImJustSebas
+
+Si este programa le ha sido util en su investigacion, considere dejar una estrella (Star) en el repositorio. Ayuda a que otros colegas lo encuentren mas facilmente.
+
+Licencia
+Este proyecto esta licenciado bajo los terminos de la Licencia MIT.
+Esto significa que puede usar, modificar y distribuir el codigo libremente, incluso en entornos comerciales o educativos, siempre que se mantenga el aviso de copyright original. Consulte el archivo LICENSE para mas detalles.
+
